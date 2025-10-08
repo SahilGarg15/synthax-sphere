@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Loader2, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Loader2, ArrowLeft, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useAuthStore } from '@/stores/authStore';
 import { toast } from 'sonner';
 
 export default function Login() {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const { login, loginWithGoogle } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -24,13 +25,28 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const user = await login(email, password, rememberMe);
+      await login(email, password, rememberMe);
       
       // Show OTP screen
       setShowOTP(true);
-      toast.success('OTP sent to your email!');
+      toast.success('OTP sent to your email! Use 123456 for demo.');
     } catch (error) {
-      toast.error('Invalid credentials. Try: sahil@example.com');
+      toast.error('Invalid credentials. Any email with password (6+ chars) works!');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    try {
+      await loginWithGoogle();
+      toast.success('Google login successful! 🎉');
+      setTimeout(() => {
+        navigate('/dashboard/learner');
+      }, 1000);
+    } catch (error) {
+      toast.error('Google login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -59,6 +75,17 @@ export default function Login() {
             <CardDescription>Login to continue your learning journey</CardDescription>
           </CardHeader>
           <CardContent>
+            {/* Demo Credentials Info */}
+            <Alert className="mb-6 bg-primary/10 border-primary/20">
+              <Info className="h-4 w-4" />
+              <AlertTitle>Demo Test Accounts</AlertTitle>
+              <AlertDescription className="text-xs space-y-1 mt-2">
+                <div><strong>Learner:</strong> learner@test.com / password123</div>
+                <div><strong>Mentor:</strong> mentor@test.com / password123</div>
+                <div><strong>Admin:</strong> admin@test.com / password123</div>
+              </AlertDescription>
+            </Alert>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -133,7 +160,7 @@ export default function Login() {
                 </div>
               </div>
 
-              <Button variant="outline" className="w-full" type="button">
+              <Button variant="outline" className="w-full" type="button" onClick={handleGoogleLogin} disabled={isLoading}>
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -152,7 +179,7 @@ export default function Login() {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                   />
                 </svg>
-                Continue with Google
+                Continue with Google (Mock)
               </Button>
             </form>
 

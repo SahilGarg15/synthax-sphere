@@ -58,7 +58,7 @@ export default function Signup() {
 
         <Card className="card-glow">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold gradient-text">Join CodeCraft</CardTitle>
+            <CardTitle className="text-3xl font-bold gradient-text">Join CodeTeach</CardTitle>
             <CardDescription>Start your coding journey today</CardDescription>
           </CardHeader>
           <CardContent>

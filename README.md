@@ -1,4 +1,16 @@
-# Welcome to your Lovable project
+# Synthax Sphere - Learning Management System
+
+A modern, feature-rich Learning Management System built with React, TypeScript, and Vite.
+
+## 🎓 Test Accounts
+
+Use these credentials to explore different user roles:
+
+- **Learner:** learner@test.com / password123
+- **Mentor:** mentor@test.com / password123
+- **Admin:** admin@test.com / password123
+
+See [TEST_ACCOUNTS.md](./TEST_ACCOUNTS.md) for detailed information.
 
 ## Project info
 

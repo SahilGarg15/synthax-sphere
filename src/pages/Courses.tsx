@@ -78,7 +78,7 @@ export default function Courses() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Link to={`/course/${course.id}`}>
+              <Link to={`/courses/${course.id}`}>
                 <Card className="card-glow-hover h-full cursor-pointer group">
                   <div className="h-48 bg-gradient-to-br from-primary to-accent rounded-t-lg relative overflow-hidden">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all" />

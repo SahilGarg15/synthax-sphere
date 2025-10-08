@@ -6,8 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Hero3D from '@/components/Hero3D';
 import Navbar from '@/components/Navbar';
 import { mockCourses } from '@/data/mockData';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function Landing() {
+  const { isAuthenticated } = useAuthStore();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -30,13 +32,13 @@ export default function Landing() {
               Interactive courses, live coding sessions, and a thriving community to accelerate your programming journey
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/signup">
+              <Link to={isAuthenticated ? "/courses" : "/signup"}>
                 <Button variant="hero" size="xl" className="group">
                   Start Learning
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link to="/#courses">
+              <Link to="/courses">
                 <Button variant="neon" size="xl">
                   Explore Courses
                 </Button>
@@ -76,7 +78,7 @@ export default function Landing() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4">Why Choose CodeCraft?</h2>
+            <h2 className="text-4xl font-bold mb-4">Why Choose CodeTeach?</h2>
             <p className="text-xl text-muted-foreground">Everything you need to become a professional developer</p>
           </motion.div>
 
@@ -193,9 +195,11 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <Button variant="hero" size="lg">
-                Find Your Mentor
-              </Button>
+              <Link to="/mentorship">
+                <Button variant="hero" size="lg">
+                  Find Your Mentor
+                </Button>
+              </Link>
             </motion.div>
             
             <motion.div
@@ -250,7 +254,7 @@ export default function Landing() {
           >
             <h2 className="text-4xl font-bold mb-4">Ready to start your coding journey?</h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join thousands of developers who are mastering their craft with CodeCraft LMS
+              Join thousands of developers who are mastering their craft with CodeTeach LMS
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/signup">
@@ -271,7 +275,7 @@ export default function Landing() {
       {/* Footer */}
       <footer className="py-12 bg-card/50 border-t border-border">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; 2024 CodeCraft LMS. Built with passion for developers.</p>
+          <p>&copy; 2024 CodeTeach LMS. Built with passion for developers.</p>
         </div>
       </footer>
     </div>

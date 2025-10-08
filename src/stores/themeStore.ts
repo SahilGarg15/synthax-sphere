@@ -15,13 +15,34 @@ export const useThemeStore = create<ThemeState>()(
       toggleTheme: () => {
         set((state) => {
           const newTheme = state.theme === 'light' ? 'dark' : 'light';
-          document.documentElement.classList.toggle('dark', newTheme === 'dark');
+          
+          console.log('Toggle theme:', state.theme, '→', newTheme);
+          
+          // Simply add or remove the 'dark' class
+          if (newTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+          
+          console.log('HTML classes:', document.documentElement.className);
+          
           return { theme: newTheme };
         });
       },
 
       setTheme: (theme: 'light' | 'dark') => {
-        document.documentElement.classList.toggle('dark', theme === 'dark');
+        console.log('Set theme:', theme);
+        
+        // Simply add or remove the 'dark' class
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        
+        console.log('HTML classes:', document.documentElement.className);
+        
         set({ theme });
       },
     }),

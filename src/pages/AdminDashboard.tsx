@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Navbar from '@/components/Navbar';
 import { useAuthStore } from '@/stores/authStore';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const analyticsData = [
@@ -18,6 +21,35 @@ const analyticsData = [
 
 export default function AdminDashboard() {
   const { user } = useAuthStore();
+  const navigate = useNavigate();
+
+  // Role-based access control
+  useEffect(() => {
+    if (!user || user.role !== 'admin') {
+      toast.error('Access denied! Admin privileges required.');
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  const handleManageUsers = () => {
+    toast.success('Opening User Management...');
+    // Future: Navigate to user management page
+  };
+
+  const handleManageCourses = () => {
+    toast.success('Opening Course Management...');
+    // Future: Navigate to course management page
+  };
+
+  const handleViewAnalytics = () => {
+    toast.info('Analytics dashboard is already displayed below');
+    // Smooth scroll to analytics section
+    window.scrollTo({ top: 400, behavior: 'smooth' });
+  };
+
+  if (!user || user.role !== 'admin') {
+    return null; // Don't render anything while redirecting
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -154,15 +186,15 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-3 gap-4">
-                <Button variant="default" className="h-20">
+                <Button variant="default" className="h-20" onClick={handleManageUsers}>
                   <Users className="mr-2 h-5 w-5" />
                   Manage Users
                 </Button>
-                <Button variant="default" className="h-20">
+                <Button variant="default" className="h-20" onClick={handleManageCourses}>
                   <BookOpen className="mr-2 h-5 w-5" />
                   Manage Courses
                 </Button>
-                <Button variant="default" className="h-20">
+                <Button variant="default" className="h-20" onClick={handleViewAnalytics}>
                   <TrendingUp className="mr-2 h-5 w-5" />
                   View Analytics
                 </Button>

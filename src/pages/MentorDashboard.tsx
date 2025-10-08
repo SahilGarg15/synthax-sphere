@@ -4,9 +4,50 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import { useAuthStore } from '@/stores/authStore';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 export default function MentorDashboard() {
   const { user } = useAuthStore();
+  const navigate = useNavigate();
+
+  // Role-based access control
+  useEffect(() => {
+    if (!user || user.role !== 'mentor') {
+      toast.error('Access denied! Mentor privileges required.');
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  const handleJoinSession = (studentName: string, topic: string) => {
+    toast.success(`Joining session with ${studentName} about ${topic}...`);
+    // Future: Open video call or meeting room
+  };
+
+  const handleRespond = (menteeName: string) => {
+    toast.success(`Opening chat with ${menteeName}...`);
+    // Future: Open messaging interface
+  };
+
+  const handleSchedule = (menteeName: string) => {
+    toast.success(`Scheduling session with ${menteeName}...`);
+    // Future: Open calendar scheduling interface
+  };
+
+  const handleViewAll = (section: string) => {
+    toast.info(`Viewing all ${section}...`);
+    // Future: Navigate to full list page
+  };
+
+  const handleOpenCalendar = () => {
+    toast.success('Opening your mentor calendar...');
+    // Future: Open full calendar view
+  };
+
+  if (!user || user.role !== 'mentor') {
+    return null; // Don't render anything while redirecting
+  }
 
   const upcomingSessions = [
     { id: 1, student: 'Sahil Kumar', topic: 'React Hooks Deep Dive', time: '2:00 PM Today' },
@@ -76,7 +117,9 @@ export default function MentorDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>Upcoming Sessions</CardTitle>
-                  <Button variant="ghost" size="sm">View All</Button>
+                  <Button variant="ghost" size="sm" onClick={() => handleViewAll('sessions')}>
+                    View All
+                  </Button>
                 </div>
                 <CardDescription>Your scheduled mentoring sessions</CardDescription>
               </CardHeader>
@@ -92,7 +135,12 @@ export default function MentorDashboard() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium text-primary">{session.time}</p>
-                      <Button variant="glow" size="sm" className="mt-2">
+                      <Button 
+                        variant="glow" 
+                        size="sm" 
+                        className="mt-2"
+                        onClick={() => handleJoinSession(session.student, session.topic)}
+                      >
                         Join Session
                       </Button>
                     </div>
@@ -112,7 +160,9 @@ export default function MentorDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>Mentee Requests</CardTitle>
-                  <Button variant="ghost" size="sm">View All</Button>
+                  <Button variant="ghost" size="sm" onClick={() => handleViewAll('requests')}>
+                    View All
+                  </Button>
                 </div>
                 <CardDescription>New questions and session requests</CardDescription>
               </CardHeader>
@@ -131,17 +181,27 @@ export default function MentorDashboard() {
                     </div>
                     <p className="text-sm text-muted-foreground mb-3">{request.message}</p>
                     <div className="flex gap-2">
-                      <Button variant="default" size="sm" className="flex-1">
+                      <Button 
+                        variant="default" 
+                        size="sm" 
+                        className="flex-1"
+                        onClick={() => handleRespond(request.name)}
+                      >
                         Respond
                       </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex-1"
+                        onClick={() => handleSchedule(request.name)}
+                      >
                         Schedule
                       </Button>
                     </div>
                   </div>
                 ))}
 
-                <Button variant="neon" className="w-full">
+                <Button variant="neon" className="w-full" onClick={handleOpenCalendar}>
                   <Calendar className="mr-2 h-4 w-4" />
                   Open Calendar
                 </Button>
