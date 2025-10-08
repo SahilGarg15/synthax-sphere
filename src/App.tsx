@@ -7,7 +7,12 @@ import { useAuthStore } from "@/stores/authStore";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Courses from "./pages/Courses";
+import CourseViewer from "./pages/CourseViewer";
+import Community from "./pages/Community";
 import LearnerDashboard from "./pages/LearnerDashboard";
+import MentorDashboard from "./pages/MentorDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +33,9 @@ const App = () => (
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/course/:courseId" element={<CourseViewer />} />
+          <Route path="/community" element={<Community />} />
           <Route
             path="/dashboard/learner"
             element={
@@ -40,9 +48,7 @@ const App = () => (
             path="/dashboard/mentor"
             element={
               <ProtectedRoute>
-                <div className="min-h-screen flex items-center justify-center">
-                  <h1 className="text-3xl font-bold gradient-text">Mentor Dashboard Coming Soon</h1>
-                </div>
+                <MentorDashboard />
               </ProtectedRoute>
             }
           />
@@ -50,9 +56,7 @@ const App = () => (
             path="/dashboard/admin"
             element={
               <ProtectedRoute>
-                <div className="min-h-screen flex items-center justify-center">
-                  <h1 className="text-3xl font-bold gradient-text">Admin Dashboard Coming Soon</h1>
-                </div>
+                <AdminDashboard />
               </ProtectedRoute>
             }
           />
